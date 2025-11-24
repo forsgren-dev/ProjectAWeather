@@ -14,6 +14,35 @@ class Program
 
         //Your Code to present each forecast item in a grouped list
         Console.WriteLine($"Weather forecast for {forecast.City}");
+        var forecastByDate = forecast.Items
+            .GroupBy(item => item.DateTime.Date)
+            .OrderBy(group => group.Key)
+            .SelectMany(group => 
+            {
+                var date = group.Key;
+                return group.Select(item => new 
+                {
+                    Date = date,
+                    Time = item.DateTime.ToString("HH:mm"),
+                    Temperature = item.Temperature,
+                    Description = item.Description,
+                    Wind = item.WindSpeed
+                });
+            });
+
+            foreach (var dateGroup in forecastByDate.GroupBy(g => g.Date))
+            {
+                Console.WriteLine($"{dateGroup.Key.ToShortDateString()}");
+                foreach (var timeStamp in dateGroup)
+                {
+                    Console.WriteLine($"- ".PadLeft(5) 
+                        + $"{timeStamp.Time}: " 
+                        + $"{timeStamp.Description, -20}" 
+                        + $"Temp: {timeStamp.Temperature,6}°C,"
+                        + $"Wind: {timeStamp.Wind} m/s");
+                }
+        }
+        
     }
 }
 
