@@ -21,18 +21,6 @@ public class OpenWeatherService
         string content = await response.Content.ReadAsStringAsync();
         WeatherApiData wd = JsonConvert.DeserializeObject<WeatherApiData>(content);
 
-        var forecast = new Forecast
-        {
-            City = wd.city.name,
-            Items = wd.list.Select(w => new ForecastItem
-            {
-                DateTime = UnixTimeStampToDateTime(w.dt),
-                Temperature = w.main.temp,
-                WindSpeed = w.wind.speed,
-                Description = w.weather.First().description,
-                Icon = $"http://openweathermap.org/img/w/{w.weather.First().icon}.png"
-            }).ToList()
-        };
         //Convert WeatherApiData to Forecast using Linq.
         //Your code
         //Hint: you will find 
@@ -45,6 +33,19 @@ public class OpenWeatherService
         //      Icon:  $"http://openweathermap.org/img/w/{wdle.weather.First().icon}.png"   //NOTE: Not necessary, only if you like to use an icon
 
         // var forecast = new Forecast(); //dummy to compile, replaced by your own code
+
+        var forecast = new Forecast
+        {
+            City = wd.city.name,
+            Items = wd.list.Select(w => new ForecastItem
+            {
+                DateTime = UnixTimeStampToDateTime(w.dt),
+                Temperature = w.main.temp,
+                WindSpeed = w.wind.speed,
+                Description = w.weather.First().description,
+                Icon = $"http://openweathermap.org/img/w/{w.weather.First().icon}.png"
+            }).ToList()
+        };
         return forecast;
     }
     private DateTime UnixTimeStampToDateTime(double unixTimeStamp) => DateTime.UnixEpoch.AddSeconds(unixTimeStamp).ToLocalTime();
