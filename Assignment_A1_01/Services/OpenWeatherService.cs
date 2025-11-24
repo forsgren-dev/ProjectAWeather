@@ -6,7 +6,7 @@ namespace Assignment_A1_01.Services;
 public class OpenWeatherService
 {
     HttpClient _httpClient = new HttpClient();
-    readonly string _apiKey = "your_api_key_here"; // Replace with your OpenWeatherMap API key
+    readonly string _apiKey = "e0907403b9e636533faefbfe0d854a7b"; // Replace with your OpenWeatherMap API key
 
     public async Task<Forecast> GetForecastAsync(double latitude, double longitude)
     {
