@@ -9,7 +9,7 @@ public class OpenWeatherService
 
     //Event declaration
     public event EventHandler<string> WeatherForecastAvailable;
-    protected virtual void OnWeatherForecastAvailable (string message)
+    protected virtual void OnWeatherForecastAvailable(string message)
     {
         WeatherForecastAvailable?.Invoke(this, message);
     }
@@ -20,7 +20,7 @@ public class OpenWeatherService
         var uri = $"https://api.openweathermap.org/data/2.5/forecast?q={City}&units=metric&lang={language}&appid={_apiKey}";
 
         Forecast forecast = await ReadWebApiAsync(uri);
-        
+
         //Event code here to fire the event
         //Your code
         return forecast;
@@ -41,7 +41,7 @@ public class OpenWeatherService
     {
         HttpResponseMessage response = await _httpClient.GetAsync(uri);
         response.EnsureSuccessStatusCode();
-        
+
         //Convert Json to NewsResponse
         string content = await response.Content.ReadAsStringAsync();
         WeatherApiData wd = JsonConvert.DeserializeObject<WeatherApiData>(content);

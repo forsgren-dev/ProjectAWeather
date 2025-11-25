@@ -1,7 +1,6 @@
-﻿using System.Collections.Concurrent;
+﻿using Assignment_A1_03.Models;
 using Newtonsoft.Json;
-
-using Assignment_A1_03.Models;
+using System.Collections.Concurrent;
 
 namespace Assignment_A1_03.Services;
 
@@ -16,7 +15,7 @@ public class OpenWeatherService
 
     //Event declaration
     public event EventHandler<string> WeatherForecastAvailable;
-    protected virtual void OnWeatherForecastAvailable (string message)
+    protected virtual void OnWeatherForecastAvailable(string message)
     {
         WeatherForecastAvailable?.Invoke(this, message);
     }
@@ -25,7 +24,7 @@ public class OpenWeatherService
         //part of cache code here to check if forecast in Cache
         //generate an event that shows forecast was from cache
         //Your code
-        
+
         //https://openweathermap.org/current
         var language = System.Globalization.CultureInfo.CurrentUICulture.TwoLetterISOLanguageName;
         var uri = $"https://api.openweathermap.org/data/2.5/forecast?q={City}&units=metric&lang={language}&appid={apiKey}";

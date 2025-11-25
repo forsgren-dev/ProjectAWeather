@@ -1,5 +1,5 @@
-﻿using Newtonsoft.Json;
-using Assignment_A1_01.Models;
+﻿using Assignment_A1_01.Models;
+using Newtonsoft.Json;
 
 namespace Assignment_A1_01.Services;
 
@@ -16,7 +16,7 @@ public class OpenWeatherService
 
         HttpResponseMessage response = await _httpClient.GetAsync(uri);
         response.EnsureSuccessStatusCode();
-        
+
         //Convert Json to NewsResponse
         string content = await response.Content.ReadAsStringAsync();
         WeatherApiData wd = JsonConvert.DeserializeObject<WeatherApiData>(content);
