@@ -24,8 +24,8 @@ class Program
                 {
                     Date = group.Key,
                     Time = item.DateTime.ToString("HH:mm"),
-                    Temperature = item.Temperature,
-                    Description = item.Description,
+                    Temp = item.Temperature,
+                    Desc = item.Description,
                     Wind = item.WindSpeed
                 });
             });
@@ -43,8 +43,8 @@ class Program
                 TextColor.Switch(switchColor);
                 Console.WriteLine($"- ".PadLeft(5)
                    + $"{timeStamp.Time}: "
-                   + $"{timeStamp.Description,-20}"
-                   + $"Temp: {timeStamp.Temperature,6}°C, "
+                   + $"{timeStamp.Desc,-20}"
+                   + $"Temp: {timeStamp.Temp,6}°C, "
                    + $"Wind: {timeStamp.Wind,-4} m/s");
                 switchColor = !switchColor;
             }
