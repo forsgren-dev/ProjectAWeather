@@ -1,6 +1,6 @@
 ﻿namespace Assignment_A1_01.Models
 {
-    internal class TextColor
+    public struct TextColor
     {
         public const string NORMAL = "\x1b[39m";
         public const string RED = "\x1b[91m";
@@ -14,9 +14,6 @@
         public const string NOBOLD = "\x1b[22m";
         public const string UNDERLINE = "\x1b[4m";
         public const string NOUNDERLINE = "\x1b[24m";
-        public const string REVERSE = "\x1b[7m";
-        public const string NOREVERSE = "\x1b[27m";
-
 
         public static void Switch(bool switchColor)
         {
