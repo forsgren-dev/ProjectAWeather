@@ -5,7 +5,7 @@ namespace Assignment_A1_02.Services;
 public class OpenWeatherService
 {
     readonly HttpClient _httpClient = new HttpClient();
-    readonly string _apiKey = "your_api_key_here"; // Replace with your OpenWeatherMap API key
+    readonly string _apiKey = "e0907403b9e636533faefbfe0d854a7b"; // Replace with your OpenWeatherMap API key
 
     //Event declaration
     public event EventHandler<string> WeatherForecastAvailable;
@@ -48,7 +48,18 @@ public class OpenWeatherService
 
         //Convert WeatherApiData to Forecast using Linq.
         //Your code
-        var forecast = new Forecast(); //dummy to compile, replaced by your own code
+        var forecast = new Forecast
+        {
+            City = wd.city.name,
+            Items = wd.list.Select(w => new ForecastItem
+            {
+                DateTime = UnixTimeStampToDateTime(w.dt),
+                Temperature = w.main.temp,
+                WindSpeed = w.wind.speed,
+                Description = w.weather.First().description,
+                Icon = $"http://openweathermap.org/img/w/{w.weather.First().icon}.png"
+            }).ToList()
+        };
         return forecast;
     }
 
