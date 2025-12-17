@@ -55,16 +55,13 @@ class Program
 
             await Task.WhenAll(tasks[0], tasks[1]);
         }
-        catch (HttpRequestException ex)
-        {
-            Console.WriteLine($"HttpRequestException: {ex.Message}");
-        }
+        
         catch (Exception ex)
         {
             exception = ex;
             //How to handle an exception
             //Your Code
-            Console.WriteLine($"An unexpected error has occured: {ex.Message}");
+            Console.WriteLine($"{TextColor.RED}Weather Service error:{TextColor.NORMAL} {ex.Message}");
         }
         
         //Your Code
@@ -127,7 +124,7 @@ class Program
     public static void OnWeatherForecastAvailable(object sender, string message)
     {
             
-            Console.WriteLine($"{TextColor.GREEN}Message from Weather Service:{TextColor.WHITE} {message}");
+            Console.WriteLine($"{TextColor.GREEN}Message from Weather Service:{TextColor.NORMAL} {message}");
 
     }
 }
