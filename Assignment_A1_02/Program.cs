@@ -1,5 +1,6 @@
 ﻿using Assignment_A1_02.Models;
 using Assignment_A1_02.Services;
+using static System.Net.WebRequestMethods;
 
 namespace Assignment_A1_02;
 
@@ -54,15 +55,22 @@ class Program
 
             await Task.WhenAll(tasks[0], tasks[1]);
         }
+        catch (HttpRequestException ex)
+        {
+            Console.WriteLine($"HttpRequestException: {ex.Message}");
+        }
         catch (Exception ex)
         {
             exception = ex;
             //How to handle an exception
             //Your Code
+            Console.WriteLine($"An unexpected error has occured: {ex.Message}");
         }
+        
         //Your Code
         foreach (Task<Forecast> task in tasks)
         {
+            Console.WriteLine("-----------------------------");
             if (task != null && task.Status == TaskStatus.RanToCompletion)
                 PresentForecast(task.Result);
 
@@ -111,15 +119,15 @@ class Program
             Console.WriteLine($"{TextColor.NORMAL}");
         }
 
-        Console.WriteLine("Press any key to continue...");
-        Console.ReadKey();
+        //Console.WriteLine("Press any key to continue...");
+        //Console.ReadKey();
     }
 
     //Event handler declaration
     public static void OnWeatherForecastAvailable(object sender, string message)
     {
-        
-            Console.WriteLine($"Message from Weather Service: {message}");
+            
+            Console.WriteLine($"{TextColor.GREEN}Message from Weather Service:{TextColor.WHITE} {message}");
 
     }
 }
