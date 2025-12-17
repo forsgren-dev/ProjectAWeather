@@ -8,7 +8,7 @@ public class OpenWeatherService
     readonly string _apiKey = "e0907403b9e636533faefbfe0d854a7b"; // Replace with your OpenWeatherMap API key
 
     //Event declaration
-    public event EventHandler<string> WeatherForecastAvailable;
+    public event EventHandler<string>? WeatherForecastAvailable;
     protected virtual void OnWeatherForecastAvailable(string message)
     {
         WeatherForecastAvailable?.Invoke(this, message);
@@ -23,6 +23,11 @@ public class OpenWeatherService
 
         //Event code here to fire the event
         //Your code
+        if (forecast != null)
+        {
+            OnWeatherForecastAvailable($"New weather forecast for {City} available.");
+            
+        }
         return forecast;
     }
     public async Task<Forecast> GetForecastAsync(double latitude, double longitude)
@@ -35,6 +40,10 @@ public class OpenWeatherService
 
         //Event code here to fire the event
         //Your code
+        if (forecast != null)
+        {
+            OnWeatherForecastAvailable($"New weather forecast for ({latitude}, {longitude}) avaiable.");
+        }
         return forecast;
     }
     private async Task<Forecast> ReadWebApiAsync(string uri)

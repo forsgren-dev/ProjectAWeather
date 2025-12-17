@@ -37,15 +37,16 @@ class Program
     {
         OpenWeatherService service = new OpenWeatherService();
 
-        //Register the event
         //Your Code
+        service.WeatherForecastAvailable += OnWeatherForecastAvailable;
+        
 
         Task<Forecast>[] tasks = { null, null };
         Exception exception = null;
         try
         {
-            double latitude = 59.5086798659495;
-            double longitude = 18.2654625932976;
+            double latitude = 60.67452;
+            double longitude = 17.14174;
 
             //Create the two tasks and wait for comletion
             tasks[0] = service.GetForecastAsync(latitude, longitude);
@@ -59,12 +60,14 @@ class Program
             //How to handle an exception
             //Your Code
         }
-
-        foreach (var task in tasks)
+        //Your Code
+        foreach (Task<Forecast> task in tasks)
         {
-            //How to deal with successful and fault tasks
-            //Your Code
+            if (task != null && task.Status == TaskStatus.RanToCompletion)
+                PresentForecast(task.Result);
+
         }
+        service.WeatherForecastAvailable -= OnWeatherForecastAvailable;
     }
 
     public static void PresentForecast(Forecast forecast)
@@ -108,13 +111,15 @@ class Program
             Console.WriteLine($"{TextColor.NORMAL}");
         }
 
-        Console.WriteLine("Press any key to exit...");
+        Console.WriteLine("Press any key to continue...");
         Console.ReadKey();
     }
 
     //Event handler declaration
-    public static void Service_WeatherForecastAvailable(object sender, string message)
+    public static void OnWeatherForecastAvailable(object sender, string message)
     {
-        Console.WriteLine($"{TextColor.GREEN}Event received: {message}{TextColor.NORMAL}");
+        
+            Console.WriteLine($"Message from Weather Service: {message}");
+
     }
 }
