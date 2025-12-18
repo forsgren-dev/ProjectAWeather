@@ -1,11 +1,15 @@
 ﻿using Assignment_A1_02.Models;
 using Newtonsoft.Json;
+using System.Collections.Concurrent;
 
 namespace Assignment_A1_02.Services;
 public class OpenWeatherService
 {
     readonly HttpClient _httpClient = new HttpClient();
     readonly string _apiKey = "e0907403b9e636533faefbfe0d854a7b"; // Replace with your OpenWeatherMap API key
+
+    private readonly ConcurrentDictionary<string, (Forecast forecast, DateTime fetched)> _cache = new();
+    private static readonly TimeSpan CachedTime = TimeSpan.FromMinutes(1);
 
     //Event declaration
     public event EventHandler<string>? WeatherForecastAvailable;
@@ -19,13 +23,20 @@ public class OpenWeatherService
         var language = System.Globalization.CultureInfo.CurrentUICulture.TwoLetterISOLanguageName;
         var uri = $"https://api.openweathermap.org/data/2.5/forecast?q={City}&units=metric&lang={language}&appid={_apiKey}";
 
+        if (_cache.TryGetValue(uri, out var cached) && DateTime.UtcNow - cached.fetched < CachedTime)
+        {
+            OnWeatherForecastAvailable($"Cached weather forecast for {City} available.");
+            return cached.forecast;
+        }
+
         Forecast forecast = await ReadWebApiAsync(uri);
 
         //Event code here to fire the event
         //Your code
         if (forecast != null)
         {
-            OnWeatherForecastAvailable($"New weather forecast for {City} available.");
+            _cache[uri] = (forecast, DateTime.UtcNow);
+            OnWeatherForecastAvailable($"New weather forecast for {City} downloaded.");
             
         }
         return forecast;
@@ -36,17 +47,26 @@ public class OpenWeatherService
         var language = System.Globalization.CultureInfo.CurrentUICulture.TwoLetterISOLanguageName;
         var uri = $"https://api.openweathermap.org/data/2.5/forecast?lat={latitude}&lon={longitude}&units=metric&lang={language}&appid={_apiKey}";
 
+        if (_cache.TryGetValue(uri, out var cached) && DateTime.UtcNow - cached.fetched < CachedTime)
+        {
+            OnWeatherForecastAvailable($"Cached weather forecast for ({latitude}, {longitude}) avaiable.");
+            return cached.forecast;
+        }
+        
         Forecast forecast = await ReadWebApiAsync(uri);
 
         //Event code here to fire the event
         //Your code
         if (forecast != null)
         {
-            OnWeatherForecastAvailable($"New weather forecast for ({latitude}, {longitude}) avaiable.");
+            _cache[uri] = (forecast, DateTime.UtcNow);
+            OnWeatherForecastAvailable($"New weather forecast for ({latitude}, {longitude}) downloaded.");
         }
+
         return forecast;
     }
     private async Task<Forecast> ReadWebApiAsync(string uri)
+
     {
         HttpResponseMessage response = await _httpClient.GetAsync(uri);
         response.EnsureSuccessStatusCode();
