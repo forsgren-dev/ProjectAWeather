@@ -51,15 +51,15 @@ class Program
 
             //Create the two tasks and wait for comletion
             tasks[0] = service.GetForecastAsync(latitude, longitude);
-            tasks[1] = service.GetForecastAsync("Miami");
+            tasks[1] = service.GetForecastAsync("Stockholm");
             
 
             await Task.WhenAll(tasks[0], tasks[1]);
 
             tasks[0] = service.GetForecastAsync(latitude, longitude);
-            tasks[1] = service.GetForecastAsync("Miami");
+            tasks[1] = service.GetForecastAsync("Stockholm");
 
-            await Task.WhenAll(tasks[0], tasks[1]);
+            await Task.WhenAll(tasks.ToArray());
 
             // For testing - it works! =)
             //await Task.Delay(TimeSpan.FromSeconds(65));
