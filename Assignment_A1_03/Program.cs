@@ -4,34 +4,6 @@ using static System.Net.WebRequestMethods;
 
 namespace Assignment_A1_03;
 
-public struct TextColor
-{
-    public const string NORMAL = "\x1b[39m";
-    public const string RED = "\x1b[91m";
-    public const string GREEN = "\x1b[92m";
-    public const string YELLOW = "\x1b[93m";
-    public const string BLUE = "\x1b[94m";
-    public const string MAGENTA = "\x1b[95m";
-    public const string CYAN = "\x1b[96m";
-    public const string WHITE = "\x1b[97m";
-    public const string BOLD = "\x1b[1m";
-    public const string NOBOLD = "\x1b[22m";
-    public const string UNDERLINE = "\x1b[4m";
-    public const string NOUNDERLINE = "\x1b[24m";
-
-    public static void Switch(bool switchColor)
-    {
-        if (switchColor)
-        {
-            Console.Write(WHITE);
-        }
-        else
-        {
-            Console.Write(CYAN);
-        }
-    }
-}
-
 class Program
 {
     static async Task Main(string[] args)
@@ -41,9 +13,9 @@ class Program
         //Your Code
         service.WeatherForecastAvailable += OnWeatherForecastAvailable;
 
-
         Task<Forecast>[] tasks = { null, null };
         Exception exception = null;
+
         try
         {
             double latitude = 60.67452;
@@ -53,8 +25,7 @@ class Program
             tasks[0] = service.GetForecastAsync(latitude, longitude);
             tasks[1] = service.GetForecastAsync("Stockholm");
 
-
-            await Task.WhenAll(tasks[0], tasks[1]);
+            await Task.WhenAll(tasks.ToArray());
 
             tasks[0] = service.GetForecastAsync(latitude, longitude);
             tasks[1] = service.GetForecastAsync("Stockholm");
@@ -65,7 +36,7 @@ class Program
             //await Task.Delay(TimeSpan.FromSeconds(65));
 
             //tasks[0] = service.GetForecastAsync(latitude, longitude);
-            //tasks[1] = service.GetForecastAsync("Miami");
+            //tasks[1] = service.GetForecastAsync("Stockholm");
 
             //await Task.WhenAll(tasks[0], tasks[1]);
         }
@@ -89,6 +60,7 @@ class Program
         service.WeatherForecastAvailable -= OnWeatherForecastAvailable;
     }
 
+    // Method to print out forecasts
     public static void PresentForecast(Forecast forecast)
     {
         bool switchColor = false;
@@ -140,5 +112,32 @@ class Program
 
         Console.WriteLine($"{TextColor.GREEN}Message from Weather Service:{TextColor.NORMAL} {message}");
 
+    }
+    public struct TextColor
+    {
+        public const string NORMAL = "\x1b[39m";
+        public const string RED = "\x1b[91m";
+        public const string GREEN = "\x1b[92m";
+        public const string YELLOW = "\x1b[93m";
+        public const string BLUE = "\x1b[94m";
+        public const string MAGENTA = "\x1b[95m";
+        public const string CYAN = "\x1b[96m";
+        public const string WHITE = "\x1b[97m";
+        public const string BOLD = "\x1b[1m";
+        public const string NOBOLD = "\x1b[22m";
+        public const string UNDERLINE = "\x1b[4m";
+        public const string NOUNDERLINE = "\x1b[24m";
+
+        public static void Switch(bool switchColor)
+        {
+            if (switchColor)
+            {
+                Console.Write(WHITE);
+            }
+            else
+            {
+                Console.Write(CYAN);
+            }
+        }
     }
 }
