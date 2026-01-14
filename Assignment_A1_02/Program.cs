@@ -31,7 +31,6 @@ public struct TextColor
         }
     }
 }
-
 class Program
 {
     static async Task Main(string[] args)
@@ -130,15 +129,13 @@ class Program
             Console.WriteLine($"{TextColor.NORMAL}");
         }
 
-        //Console.WriteLine("Press any key to continue...");
-        //Console.ReadKey();
+        Console.WriteLine("Press any key to continue...");
+        Console.ReadKey();
     }
 
     //Event handler declaration
     public static void OnWeatherForecastAvailable(object sender, string message)
     {
-            
             Console.WriteLine($"{TextColor.GREEN}Message from Weather Service:{TextColor.NORMAL} {message}");
-
     }
 }
