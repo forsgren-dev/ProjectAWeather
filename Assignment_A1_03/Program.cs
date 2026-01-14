@@ -25,20 +25,22 @@ class Program
             tasks[0] = service.GetForecastAsync(latitude, longitude);
             tasks[1] = service.GetForecastAsync("Stockholm");
 
-            await Task.WhenAll(tasks.ToArray());
+            await Task.WhenAll(tasks);
 
             tasks[0] = service.GetForecastAsync(latitude, longitude);
             tasks[1] = service.GetForecastAsync("Stockholm");
 
-            await Task.WhenAll(tasks.ToArray());
+            await Task.WhenAll(tasks);
 
-            // Extra tasks for testing cache timer - it works! 
-            //await Task.Delay(TimeSpan.FromSeconds(65));
+            // Extra tasks for testing cache timer:
 
-            //tasks[0] = service.GetForecastAsync(latitude, longitude);
-            //tasks[1] = service.GetForecastAsync("Stockholm");
+            /* await Task.Delay(TimeSpan.FromSeconds(15));
+            tasks[0] = service.GetForecastAsync(latitude, longitude);
 
-            //await Task.WhenAll(tasks[0], tasks[1]);
+            await Task.Delay(TimeSpan.FromSeconds(50));
+            tasks[1] = service.GetForecastAsync("Stockholm");
+
+            await Task.WhenAll(tasks[0], tasks[1]); */
         }
 
         catch (Exception ex)
