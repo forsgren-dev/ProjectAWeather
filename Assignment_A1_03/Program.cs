@@ -32,7 +32,7 @@ class Program
 
             await Task.WhenAll(tasks.ToArray());
 
-            // For testing - it works! =)
+            // Extra tasks for testing cache timer - it works! 
             //await Task.Delay(TimeSpan.FromSeconds(65));
 
             //tasks[0] = service.GetForecastAsync(latitude, longitude);
@@ -54,7 +54,9 @@ class Program
         {
             Console.WriteLine("-----------------------------");
             if (task != null && task.Status == TaskStatus.RanToCompletion)
+            {
                 PresentForecast(task.Result);
+            }
 
         }
         service.WeatherForecastAvailable -= OnWeatherForecastAvailable;
@@ -102,8 +104,8 @@ class Program
             Console.WriteLine($"{TextColor.NORMAL}");
         }
 
-        //Console.WriteLine("Press any key to continue...");
-        //Console.ReadKey();
+        Console.WriteLine("Press any key to quit...");
+        Console.ReadKey();
     }
 
     //Event handler declaration

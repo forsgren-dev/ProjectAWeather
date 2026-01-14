@@ -1,6 +1,7 @@
 ﻿using Assignment_A1_03.Models;
 using Newtonsoft.Json;
 using System.Collections.Concurrent;
+using static Assignment_A1_03.Program;
 
 namespace Assignment_A1_03.Services;
 
@@ -37,7 +38,7 @@ public class OpenWeatherService
         if (forecast != null)
         {
             _cache[uri] = (forecast, DateTime.UtcNow);
-            OnWeatherForecastAvailable($"New weather forecast for {City} downloaded.");
+            OnWeatherForecastAvailable($"{TextColor.YELLOW}New weather forecast for {City} downloaded.{TextColor.NORMAL}");
 
         }
         return forecast;
@@ -50,7 +51,7 @@ public class OpenWeatherService
 
         if (_cache.TryGetValue(uri, out var cached) && DateTime.UtcNow - cached.fetched < CachedTime)
         {
-            OnWeatherForecastAvailable($"Cached weather forecast for ({latitude}, {longitude}) avaiable.");
+            OnWeatherForecastAvailable($"Cached weather forecast for ({latitude}, {longitude}) available.");
             return cached.forecast;
         }
 
@@ -61,7 +62,7 @@ public class OpenWeatherService
         if (forecast != null)
         {
             _cache[uri] = (forecast, DateTime.UtcNow);
-            OnWeatherForecastAvailable($"New weather forecast for ({latitude}, {longitude}) downloaded.");
+            OnWeatherForecastAvailable($"{TextColor.YELLOW}New weather forecast for ({latitude}, {longitude}) downloaded.{TextColor.NORMAL}");
         }
 
         return forecast;
